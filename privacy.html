@@ -102,6 +102,13 @@
     <li><strong>Số điện thoại:</strong> Dùng để xác nhận danh tính khách hàng B2B trước khi kích hoạt tài khoản.</li>
   </ul>
   <p>Thông tin này chỉ được sử dụng nội bộ để xác thực và hỗ trợ người dùng, không chia sẻ với bất kỳ bên thứ ba nào.</p>
+  <h2>10. Firebase và thông báo đẩy</h2>
+  <p>Ứng dụng sử dụng dịch vụ <strong>Firebase Cloud Messaging (FCM)</strong> của Google để gửi thông báo đẩy đến người dùng.</p>
+  <p>Trong quá trình này, chúng tôi thu thập một mã định danh thiết bị (Device Token) để:</p>
+  <ul>
+    <li>Gửi thông báo về cập nhật đơn hàng, trạng thái giao dịch và các thông tin liên quan.</li>
+  </ul>
+  <p>Thông tin định danh thiết bị này được gửi tới máy chủ của Firebase (thuộc Google), nhưng không được chia sẻ với bất kỳ bên thứ ba nào khác ngoài mục đích nhận thông báo.</p>
   <footer>
     © 2025 VACOM App. All rights reserved.
   </footer>
