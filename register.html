@@ -102,7 +102,30 @@
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return re.test(email);
     }
-
+    function getMessageError(error) {
+      const UNKNOWN = "Lỗi không xác định";
+    
+      if (!error) return UNKNOWN;
+    
+      if (error.error) {
+        if (error.error.validationErrors) {
+          const _errors = error.error.validationErrors;
+          let msgError = "";
+          _errors.forEach(e => {
+            msgError += e.message + "\n";
+          });
+          return msgError.trim();
+        } else if (error.error.message) {
+          return error.error.message;
+        } else if (error.error.details) {
+          return error.error.details;
+        } else {
+          return UNKNOWN;
+        }
+      }
+    
+      return UNKNOWN;
+    }
     function handleSubmit(event) {
       event.preventDefault();
       const fields = [
@@ -156,11 +179,23 @@
         },
         body: JSON.stringify(data)
       })
-      .then(response => response.json())
-      .then(result => {
+      .then(async response => {
+        const resData = await response.json();
+      
+        if (!response.ok) {
+          const errorMessage = getMessageError(resData);
+          document.getElementById("result").innerText = errorMessage;
+          console.error("Lỗi từ server:", resData);
+          return;
+        }
+      
         document.getElementById("result").innerText = "Đăng ký thành công!";
         //document.getElementById("registerForm").reset();
       })
+      .catch(error => {
+        document.getElementById("result").innerText = "Lỗi kết nối tới máy chủ.";
+        console.error("Fetch error:", error);
+      });
       .catch(error => {
         document.getElementById("result").innerText = "Đăng ký thất bại. Vui lòng thử lại!";
         console.error("Error:", error);
