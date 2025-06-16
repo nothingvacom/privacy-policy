@@ -112,7 +112,8 @@
       let valid = true;
 
       fields.forEach(field => {
-        document.getElementById("err-" + field)?.innerText = "";
+        const el = document.getElementById("err-" + field);
+        if (el) el.innerText = "";
       });
 
       const data = {
