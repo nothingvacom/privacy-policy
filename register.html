@@ -158,7 +158,7 @@
       .then(response => response.json())
       .then(result => {
         document.getElementById("result").innerText = "Đăng ký thành công!";
-        document.getElementById("registerForm").reset();
+        //document.getElementById("registerForm").reset();
       })
       .catch(error => {
         document.getElementById("result").innerText = "Đăng ký thất bại. Vui lòng thử lại!";
