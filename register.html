@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đăng ký tài khoản cửa hàng</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f3f3f3;
+    }
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .btn {
+      background: #007bff;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      width: 100%;
+      border-radius: 5px;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-top: 3px;
+    }
+    .success {
+      color: green;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Đăng ký cửa hàng</h2>
+    <form id="registerForm" onsubmit="return handleSubmit(event)">
+      <label>Người liên hệ *</label>
+      <input type="text" id="fullName" required>
+      <div class="error" id="err-fullName"></div>
+
+      <label>Số điện thoại *</label>
+      <input type="tel" id="tel" pattern="^0\d{9}$" required>
+      <div class="error" id="err-tel"></div>
+
+      <label>Địa chỉ *</label>
+      <input type="text" id="address" required>
+      <div class="error" id="err-address"></div>
+
+      <label>Email *</label>
+      <input type="email" id="adminEmailAddress" required>
+      <div class="error" id="err-email"></div>
+
+      <label>Mã cửa hàng *</label>
+      <input type="text" id="name" placeholder="viết liền không dấu" required>
+      <div class="error" id="err-name"></div>
+
+      <label>Tên cửa hàng *</label>
+      <input type="text" id="nameShop" required>
+      <div class="error" id="err-nameShop"></div>
+
+      <label>Mật khẩu *</label>
+      <input type="password" id="adminPassword" minlength="6" required>
+      <div class="error" id="err-pass"></div>
+
+      <label>Xác nhận mật khẩu *</label>
+      <input type="password" id="confirmPass" minlength="6" required>
+      <div class="error" id="err-confirm"></div>
+
+      <button type="submit" class="btn">Đăng ký</button>
+      <div id="result" class="success"></div>
+    </form>
+  </div>
+
+  <script>
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    function handleSubmit(event) {
+      event.preventDefault();
+      const fields = [
+        "fullName", "tel", "address", "adminEmailAddress",
+        "name", "nameShop", "adminPassword", "confirmPass"
+      ];
+      let valid = true;
+
+      fields.forEach(field => {
+        document.getElementById("err-" + field)?.innerText = "";
+      });
+
+      const data = {
+        fullName: document.getElementById("fullName").value.trim(),
+        tel: document.getElementById("tel").value.trim(),
+        address: document.getElementById("address").value.trim(),
+        adminEmailAddress: document.getElementById("adminEmailAddress").value.trim(),
+        name: document.getElementById("name").value.trim(),
+        nameShop: document.getElementById("nameShop").value.trim(),
+        adminPassword: document.getElementById("adminPassword").value,
+        confirmPass: document.getElementById("confirmPass").value,
+      };
+
+      if (!/^0\d{9}$/.test(data.tel)) {
+        document.getElementById("err-tel").innerText = "Số điện thoại không hợp lệ (10 chữ số, bắt đầu bằng 0)";
+        valid = false;
+      }
+
+      if (!validateEmail(data.adminEmailAddress)) {
+        document.getElementById("err-email").innerText = "Email không hợp lệ";
+        valid = false;
+      }
+
+      if (data.adminPassword.length < 6) {
+        document.getElementById("err-pass").innerText = "Mật khẩu phải từ 6 ký tự trở lên";
+        valid = false;
+      }
+
+      if (data.adminPassword !== data.confirmPass) {
+        document.getElementById("err-confirm").innerText = "Mật khẩu xác nhận không khớp";
+        valid = false;
+      }
+
+      if (!valid) return false;
+
+      fetch("http://shop.vacom.com.vn/api/app/store", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(result => {
+        document.getElementById("result").innerText = "Đăng ký thành công!";
+        document.getElementById("registerForm").reset();
+      })
+      .catch(error => {
+        document.getElementById("result").innerText = "Đăng ký thất bại. Vui lòng thử lại!";
+        console.error("Error:", error);
+      });
+
+      return false;
+    }
+  </script>
+</body>
+</html>
