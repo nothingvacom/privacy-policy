@@ -1,4 +1,5 @@
-Purpose of FOREGROUND_SERVICE_CONNECTED_DEVICE Permission
-Our app uses this permission to run a foreground service that communicates with a connected POS (Point of Sale) device for printing receipts or transaction data.
-This ensures uninterrupted communication with the connected device even if the app is in the background or the screen is turned off.
-The app does not collect or transmit any user personal data as part of this process.
+Purpose of FOREGROUND_SERVICE_CONNECTED_DEVICE and FOREGROUND_SERVICE_DATA_SYNC Permissions
+Our app uses the FOREGROUND_SERVICE_CONNECTED_DEVICE permission to run a foreground service that communicates with a connected POS (Point of Sale) device for printing receipts or transaction data.
+Additionally, the FOREGROUND_SERVICE_DATA_SYNC permission is used to run a foreground service that synchronizes sales and order data between the POS device and our backend server.
+These foreground services ensure stable and uninterrupted operations even when the app is running in the background or the device screen is turned off.
+The app does not collect, transmit, or share any personal user data as part of these processes.
