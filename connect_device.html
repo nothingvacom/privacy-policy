@@ -1,5 +1,86 @@
-Purpose of FOREGROUND_SERVICE_CONNECTED_DEVICE and FOREGROUND_SERVICE_DATA_SYNC Permissions
-Our app uses the FOREGROUND_SERVICE_CONNECTED_DEVICE permission to run a foreground service that communicates with a connected POS (Point of Sale) device for printing receipts or transaction data.
-Additionally, the FOREGROUND_SERVICE_DATA_SYNC permission is used to run a foreground service that synchronizes sales and order data between the POS device and our backend server.
-These foreground services ensure stable and uninterrupted operations even when the app is running in the background or the device screen is turned off.
-The app does not collect, transmit, or share any personal user data as part of these processes.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Foreground Service Permission Justification - VACOM POS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+      background-color: #ffffff;
+      color: #333333;
+    }
+    h1, h2 {
+      color: #2E86C1;
+    }
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+    ul {
+      margin-left: 20px;
+    }
+    a {
+      color: #2E86C1;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .section {
+      margin-bottom: 1.5em;
+    }
+  </style>
+</head>
+<body>
+  <h1>VACOM POS - Foreground Service Permission Justification</h1>
+  <p>
+    This document provides the justification for the foreground service permissions required by the VACOM POS application. The app is deployed on dedicated Android-based POS devices with integrated, internal Bluetooth printers. Its key functionality is to run a persistent foreground service that listens for print commands over a specified local IP port.
+  </p>
+  
+  <div class="section">
+    <h2>1. <code>FOREGROUND_SERVICE_CONNECTED_DEVICE</code></h2>
+    <p>
+      <strong>Purpose:</strong> To maintain a stable, persistent connection with the internal Bluetooth printer.
+    </p>
+    <ul>
+      <li>Ensures that the foreground service managing the Bluetooth connection remains active even if the app is moved to the background or killed.</li>
+      <li>Guarantees real-time printing of invoices and receipts by keeping the printer connection reliable and continuous.</li>
+      <li>The printer is an internal device on the POS hardware, and the connection is never exposed to external networks.</li>
+    </ul>
+  </div>
+  
+  <div class="section">
+    <h2>2. <code>FOREGROUND_SERVICE_DATA_SYNC</code></h2>
+    <p>
+      <strong>Purpose:</strong> To enable continuous data synchronization by keeping an open socket server active.
+    </p>
+    <ul>
+      <li>Listens on a pre-defined local IP port (e.g., <code>15682</code>) to receive printing commands from other devices in the same local area network (LAN).</li>
+      <li>Ensures that the service remains active at all times to process data for print jobs even when the app is not in the foreground.</li>
+      <li>Facilitates secure, real-time data transfer strictly within the local network, with no external sharing of data.</li>
+    </ul>
+  </div>
+  
+  <div class="section">
+    <h2>Additional Information</h2>
+    <p>
+      VACOM POS is designed exclusively for dedicated POS hardware. The foreground service is critical for delivering uninterrupted printing functionality, especially on devices that require the service to run continuously—even when the app UI is closed.
+    </p>
+    <p>
+      For further details or clarification regarding our implementation and security considerations, please contact our support team.
+    </p>
+  </div>
+  
+  <div class="section">
+    <h2>Contact & Support</h2>
+    <p>
+      If you have any questions or need additional information, please contact us at: <a href="mailto:support@vacom.vn">support@vacom.vn</a>.
+    </p>
+  </div>
+</body>
+</html>
